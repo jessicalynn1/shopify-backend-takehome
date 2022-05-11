@@ -28,12 +28,16 @@ class Inventory(db.Model):
     id = db.Column(db.Integer,
                         autoincrement=True,
                         primary_key=True)
-    upc = db.Column(db.Integer, unique=True)
-    name = db.Column(db.String, unique=True)
+    product_code = db.Column(db.Integer, unique=True)
+    name = db.Column(db.String, unique=False)
+    description = db.Column(db.String, unique=False)
     quantity = db.Column(db.Integer)
+    warehouse_id = db.Column(db.Integer, db.ForeignKey("warehouse.id"))
+
+    warehouse = db.relationship("Warehouse", backref="inventory")
 
     def __repr__(self):
-        return f'<Inventory upc={self.upc} name={self.name} quantity={self.quantity}>'
+        return f'<Inventory product_code={self.product_code} name={self.name} quantity={self.quantity}>'
 
 
 class Warehouse(db.Model):
@@ -49,25 +53,25 @@ class Warehouse(db.Model):
 
 
     def __repr__(self):
-        return f'<Warehouse id={self.id} name={self.name} '
+        return f'<Warehouse id={self.id} name={self.name}>'
 
 
-class InventoryWarehouse(db.Model):
-    """Table to keep track of warehouses and their inventory"""
+# class InventoryWarehouse(db.Model):
+#     """Table to keep track of warehouses and their inventory"""
 
-    __tablename__ = 'inventory-warehouse'
+#     __tablename__ = 'inventory-warehouse'
 
-    id = db.Column(db.Integer,
-                        autoincrement=True,
-                        primary_key=True)
-    warehouse_name = db.Column(db.String, db.ForeignKey("warehouse.name"), nullable=False)
-    product_name = db.Column(db.String, db.ForeignKey("inventory.name"), nullable=False)
+#     id = db.Column(db.Integer,
+#                         autoincrement=True,
+#                         primary_key=True)
+#     warehouse_name = db.Column(db.String, db.ForeignKey("warehouse.name"), nullable=False)
+#     product_name = db.Column(db.String, db.ForeignKey("inventory.name"), nullable=False)
 
-    inventory = db.relationship("Inventory", backref="inventory-warehouse")
-    warehouse = db.relationship("Warehouse", backref="inventory-warehouse")
+#     inventory = db.relationship("Inventory", backref="inventory-warehouse")
+#     warehouse = db.relationship("Warehouse", backref="inventory-warehouse")
 
-    def __repr__(self):
-        return f'<InventoryWarehouse name={self.name} product_name={self.product_name}>'
+#     def __repr__(self):
+#         return f'<InventoryWarehouse name={self.name} product_name={self.product_name}>'
 
 
 # def example_data():

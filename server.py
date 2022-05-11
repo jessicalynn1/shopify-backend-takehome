@@ -13,11 +13,11 @@ app.jinja_env.undefined = StrictUndefined
 
 
 
-@app.route("/user_homepage")
-def user_homepage():
+@app.route("/homepage")
+def homepage():
     """Asks what you'd like to do."""
 
-    return render_template("user_homepage.html")
+    return render_template("homepage.html")
 
 
 @app.route("/create_inventory", methods=["POST"])
@@ -26,13 +26,16 @@ def create_inventory():
     
     product_code = request.form.get("product-code")
     name = request.form.get("name")
+    description = request.form.get("name")
     quantity = request.form.get("quantity")
+    warehouse_name = request.form.get("")
+    #create drop down menu to pick warehouse
 
-    new_product = Inventory(product_code=product_code, name=name, quantity=quantity)
+    new_product = Inventory(product_code=product_code, name=name, description=description, quantity=quantity)
     db.session.add(new_product)
     db.session.commit()
            
-    return 
+    return render_template("homepage.html")
 
 
 @app.route("/edit_inventory", methods=["POST"])
@@ -47,19 +50,20 @@ def edit_inventory():
     db.session.add(new_product)
     db.session.commit()
            
-    return 
+    return render_template("homepage.html")
 
 
 @app.route("/delete_inventory", methods=["POST"])
 def delete_inventory():
     """Allows user to delete an existing inventory item"""
     
+    # get item from form that user submits
     #query the inventory table to get item
-    #delete the item
-    #send inventory item back to database deleted
+    db.session.delete(item)
+    db.session.commit()
 
            
-    return 
+    return render_template("homepage.html")
 
 
 @app.route("/create_warehouse", methods=["POST"])
@@ -73,8 +77,10 @@ def create_warehouse():
         warehouse_location = Warehouse(name=location)
         db.session.add(warehouse_location)
         db.session.commit()
+    else:
+        # flash msg "Sorry this warehouse location already exists."
 
-        return 
+        return render_template("homepage.html")
 
 
 @app.route("/inventory_warehouse", methods=["POST"])
@@ -89,15 +95,17 @@ def inventory_warehouse():
     db.session.add(obj)
     db.session.commit()
            
-    return 
+    return render_template("homepage.html")
 
-@app.route("/check_inventory", methods=["GET"])
-def check_inventory():
+
+@app.route("/check_inventory_warehouse", methods=["GET"])
+def check_inventory_warehouse():
     """Allows user to search for inventory items"""
     
-    #query the inventorywarehouse table to get info to display
+    #query the inventory table to get info to display
+    #query the warehouse table to get info to display
            
-    return 
+    return render_template("homepage.html")
 
 
 
