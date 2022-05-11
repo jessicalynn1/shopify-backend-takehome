@@ -3,7 +3,7 @@ from model import connect_to_db, db, Inventory, Warehouse, InventoryWarehouse
 
 from jinja2 import StrictUndefined
 import webbrowser
-import requests
+# import requests
 import json 
 from pprint import pprint
 
@@ -24,11 +24,11 @@ def user_homepage():
 def create_inventory():
     """Allows user to create a new inventory item"""
     
-    upc = request.form.get("upc")
+    product_code = request.form.get("product-code")
     name = request.form.get("name")
     quantity = request.form.get("quantity")
 
-    new_product = Inventory(upc=upc, name=name, quantity=quantity)
+    new_product = Inventory(product_code=product_code, name=name, quantity=quantity)
     db.session.add(new_product)
     db.session.commit()
            
@@ -43,7 +43,7 @@ def edit_inventory():
     #get new input/data that needs to be changed from form
     #send inventory item back to database with changes
 
-    edited = Inventory(upc=upc, name=name, quantity=quantity)
+    edited = Inventory(product_code=product_code, name=name, quantity=quantity)
     db.session.add(new_product)
     db.session.commit()
            
@@ -67,23 +67,23 @@ def create_warehouse():
     """Allows user to create a new warehouse location"""
     
     location = request.form.get("location")
+    db_location = Warehouse.query.filter_by(name=location).first()
 
-    #need to loop through warehouses that already exist to check for dupe
-    #if not a dupe, then create a new warehouse location
-    warehouse_location = Warehouse(location=name)
-    db.session.add(warehouse_location)
-    db.session.commit()
+    if not db_location:
+        warehouse_location = Warehouse(name=location)
+        db.session.add(warehouse_location)
+        db.session.commit()
 
-    return 
+        return 
 
 
 @app.route("/inventory_warehouse", methods=["POST"])
 def inventory_warehouse():
     """Allows user to assign inventory to warehouse location"""
     
-    warehouse_name = #get from form
-    product_name = #get from form
-    product_quantity = #get from form
+    # warehouse_name = #get from form
+    # product_name = #get from form
+    # product_quantity = #get from form
 
     obj = InventoryWarehouse(warehouse_name=warehouse_name, product_name=product_name, product_quantity=product_quantity)
     db.session.add(obj)
