@@ -3,21 +3,21 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 
-class User(db.Model):
-    """A user."""
+# class User(db.Model):
+#     """A user."""
 
-    __tablename__ = 'users'
+#     __tablename__ = 'users'
 
-    id = db.Column(db.Integer,
-                        autoincrement=True,
-                        primary_key=True)
-    name = db.Column(db.String, unique=False)
-    email = db.Column(db.String, unique=True)
-    password = db.Column(db.String)
+#     id = db.Column(db.Integer,
+#                         autoincrement=True,
+#                         primary_key=True)
+#     name = db.Column(db.String, unique=False)
+#     email = db.Column(db.String, unique=True)
+#     password = db.Column(db.String)
 
 
-    def __repr__(self):
-        return f'<User user_id={self.id} email={self.email}>'
+#     def __repr__(self):
+#         return f'<User user_id={self.id} email={self.email}>'
     
     
 class Inventory(db.Model):
@@ -45,6 +45,7 @@ class Warehouse(db.Model):
                         autoincrement=True,
                         primary_key=True)
     name = db.Column(db.String, unique=True)
+    weather = db.Column(db.String, unique=False) #need to load the weather data here
 
 
     def __repr__(self):
@@ -61,7 +62,6 @@ class InventoryWarehouse(db.Model):
                         primary_key=True)
     warehouse_name = db.Column(db.String, db.ForeignKey("warehouse.name"), nullable=False)
     product_name = db.Column(db.String, db.ForeignKey("inventory.name"), nullable=False)
-    product_quantity = db.Column(db.Integer, db.ForeignKey("inventory.quantity"), nullable=False)
 
     inventory = db.relationship("Inventory", backref="inventory-warehouse")
     warehouse = db.relationship("Warehouse", backref="inventory-warehouse")
@@ -89,8 +89,8 @@ class InventoryWarehouse(db.Model):
 #     db.session.add_all([adults, thrill, kid, hm, mb, mtp, user])
 #     db.session.commit()
 
-def connect_to_db(app, db_uri="postgresql:///results", echo=False):
-    """Connect the database to our Flask app."""
+def connect_to_db(app, db_uri="postgres://popkjngt:VvqKa5kCap5HUaVA0DapnqqOVf6RHSxV@heffalump.db.elephantsql.com/popkjngt", echo=False):
+    """Connect the database to the Flask app."""
 
     app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
     app.config["SQLALCHEMY_ECHO"] = echo

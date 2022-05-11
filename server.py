@@ -1,5 +1,5 @@
 from flask import (Flask, render_template, request, flash, session, redirect)
-from model import connect_to_db, db, User, Inventory, Warehouse
+from model import connect_to_db, db, Inventory, Warehouse, InventoryWarehouse
 
 from jinja2 import StrictUndefined
 import webbrowser
@@ -11,64 +11,6 @@ app = Flask(__name__, static_url_path='/static')
 app.secret_key = "dev"
 app.jinja_env.undefined = StrictUndefined
 
-
-@app.route("/")
-def welcome_page():
-    """Show the Welcome page"""
-
-    return render_template("homepage.html")
-
-
-@app.route("/users", methods=["POST"])
-def register_user():
-    """Create a new user."""
-    email = request.form.get("email")
-    password = request.form.get("password")
-
-    if email == "" or password == "":
-        flash ("Not a valid email/password combination.")
-    else:
-        user_exist = User.query.filter_by(email=email).first()
-
-        if user_exist:
-            flash ("This email is already registered on our website. Please log in.")
-        else:
-            user = User(email=email, password=password)
-            db.session.add(user)
-            db.session.commit()
-            flash ("Account created! Please log in.")
-    
-    return redirect ("/")
-
-
-@app.route("/login", methods=["POST"])
-def log_in():
-    """Existing user log in."""
-    
-    email = request.form.get("email")
-    password = request.form.get("password")
-    
-    user = User.query.filter_by(email=email).first()
-    
-    if not user or user.password != password:
-        flash("Your input does not match our records. Please try again.")
-
-    else:
-        session["user"] = user.id
-        flash(f"Welcome, {user.email}!")
-        return redirect("/user_homepage")
-   
-    return redirect("/")
-
-
-@app.route("/logout")
-def logout():
-    """User must be logged in."""
-    
-    if "user" in session:
-        del session["user"]
-        flash("Logged Out.")
-    return redirect("/")
 
 
 @app.route("/user_homepage")
@@ -93,16 +35,45 @@ def create_inventory():
     return 
 
 
+@app.route("/edit_inventory", methods=["POST"])
+def edit_inventory():
+    """Allows user to edit an existing inventory item"""
+    
+    #query the inventory table to get item
+    #get new input/data that needs to be changed from form
+    #send inventory item back to database with changes
+
+    edited = Inventory(upc=upc, name=name, quantity=quantity)
+    db.session.add(new_product)
+    db.session.commit()
+           
+    return 
+
+
+@app.route("/delete_inventory", methods=["POST"])
+def delete_inventory():
+    """Allows user to delete an existing inventory item"""
+    
+    #query the inventory table to get item
+    #delete the item
+    #send inventory item back to database deleted
+
+           
+    return 
+
+
 @app.route("/create_warehouse", methods=["POST"])
-def create_inventory():
+def create_warehouse():
     """Allows user to create a new warehouse location"""
     
     location = request.form.get("location")
 
+    #need to loop through warehouses that already exist to check for dupe
+    #if not a dupe, then create a new warehouse location
     warehouse_location = Warehouse(location=name)
     db.session.add(warehouse_location)
     db.session.commit()
-           
+
     return 
 
 
@@ -110,9 +81,9 @@ def create_inventory():
 def inventory_warehouse():
     """Allows user to assign inventory to warehouse location"""
     
-    warehouse_name = 
-    product_name = 
-    product_quantity = 
+    warehouse_name = #get from form
+    product_name = #get from form
+    product_quantity = #get from form
 
     obj = InventoryWarehouse(warehouse_name=warehouse_name, product_name=product_name, product_quantity=product_quantity)
     db.session.add(obj)
@@ -120,7 +91,13 @@ def inventory_warehouse():
            
     return 
 
-
+@app.route("/check_inventory", methods=["GET"])
+def check_inventory():
+    """Allows user to search for inventory items"""
+    
+    #query the inventorywarehouse table to get info to display
+           
+    return 
 
 
 
