@@ -1,9 +1,9 @@
 from flask import (Flask, render_template, request, flash, session, redirect)
-from model import connect_to_db, db, Inventory, Warehouse, InventoryWarehouse
+from model import connect_to_db, db, Inventory, Warehouse
 
 from jinja2 import StrictUndefined
 import webbrowser
-# import requests
+import requests
 import json 
 from pprint import pprint
 
@@ -13,7 +13,7 @@ app.jinja_env.undefined = StrictUndefined
 
 
 
-@app.route("/homepage")
+@app.route("/")
 def homepage():
     """Asks what you'd like to do."""
 
@@ -26,44 +26,48 @@ def create_inventory():
     
     product_code = request.form.get("product-code")
     name = request.form.get("name")
-    description = request.form.get("name")
+    description = request.form.get("description")
     quantity = request.form.get("quantity")
-    warehouse_name = request.form.get("")
+    warehouse_name = request.form.get("warehouse")
+    warehouse_id = Warehouse.query.filter_by(name=warehouse_name).first()
     #create drop down menu to pick warehouse
 
-    new_product = Inventory(product_code=product_code, name=name, description=description, quantity=quantity)
+    new_product = Inventory(product_code=product_code, name=name, description=description, quantity=quantity, warehouse_id=warehouse_id.id)
     db.session.add(new_product)
     db.session.commit()
            
-    return render_template("homepage.html")
+    return render_template("create_inventory.html")
 
 
 @app.route("/edit_inventory", methods=["POST"])
 def edit_inventory():
     """Allows user to edit an existing inventory item"""
     
-    #query the inventory table to get item
-    #get new input/data that needs to be changed from form
-    #send inventory item back to database with changes
+    edit_name = request.form.get("name")
+    edit_desc = request.form.get("description") 
+    edit_quantity = request.form.get("quantity")
+    edit_warehouse = request.form.get("warehouse")
+    product_code = Inventory.query.filter_by("").first()
+    all_inventory = Inventory.query.all()
+    print(all_inventory)
 
-    edited = Inventory(product_code=product_code, name=name, quantity=quantity)
-    db.session.add(new_product)
+    edited = Inventory(product_code=product_code, name=edit_name, description=edit_desc, quantity=edit_quantity, warehouse_id=edit_warehouse)
+    db.session.add(edited)
     db.session.commit()
            
-    return render_template("homepage.html")
+    return render_template("edit_inventory.html", all_inventory=all_inventory)
 
 
 @app.route("/delete_inventory", methods=["POST"])
 def delete_inventory():
     """Allows user to delete an existing inventory item"""
     
-    # get item from form that user submits
-    #query the inventory table to get item
+    deleted = request.form.get("deleted") 
+    item = Inventory.query.filter_by(name=deleted).first()
     db.session.delete(item)
     db.session.commit()
-
            
-    return render_template("homepage.html")
+    return render_template("delete_inventory.html")
 
 
 @app.route("/create_warehouse", methods=["POST"])
@@ -72,40 +76,44 @@ def create_warehouse():
     
     location = request.form.get("location")
     db_location = Warehouse.query.filter_by(name=location).first()
+    #need to add weather here if i use that
 
     if not db_location:
-        warehouse_location = Warehouse(name=location)
+        warehouse_location = Warehouse(name=location) #need to add weather here
         db.session.add(warehouse_location)
         db.session.commit()
     else:
-        # flash msg "Sorry this warehouse location already exists."
+        flash ("This warehouse location already exists.")
 
-        return render_template("homepage.html")
+        return render_template("create_warehouse.html")
 
 
 @app.route("/inventory_warehouse", methods=["POST"])
 def inventory_warehouse():
     """Allows user to assign inventory to warehouse location"""
     
-    # warehouse_name = #get from form
-    # product_name = #get from form
-    # product_quantity = #get from form
+    warehouse_id = request.form.get("warehouse")
+    product_code = request.form.get("product-code")
+    product_name = request.form.get("product-name")
+    product_desc = request.form.get("product-desc")
+    quantity = request.form.get("quantity")
 
-    obj = InventoryWarehouse(warehouse_name=warehouse_name, product_name=product_name, product_quantity=product_quantity)
+    obj = Inventory(product_code=product_code, name=product_name, description=product_desc, quantity=quantity, warehouse_id=warehouse_id)
     db.session.add(obj)
     db.session.commit()
            
-    return render_template("homepage.html")
+    return render_template("inventory_warehouse.html")
 
 
-@app.route("/check_inventory_warehouse", methods=["GET"])
-def check_inventory_warehouse():
+@app.route("/view", methods=["GET"])
+def view():
     """Allows user to search for inventory items"""
     
-    #query the inventory table to get info to display
-    #query the warehouse table to get info to display
+    inventory_table = Inventory.query.all()
+    warehouse_table = Warehouse.query.all()
+
            
-    return render_template("homepage.html")
+    return render_template("view_inventory.html", inventory_table=inventory_table, warehouse_table=warehouse_table)
 
 
 

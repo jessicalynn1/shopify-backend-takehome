@@ -1,23 +1,29 @@
-Need to have multiple divs that do all four CRUD tasks, each has its own submit button
+<!DOCTYPE html>
+<html lang="en">
 
-Create
-inventory
-drop down of warehouses
+{% block title %} Jessica's Craft Room {% endblock %}
 
-Create
-warehouse
+{% block body %}
 
-Read
-inventory
-always shows all items
 
-Read
-warehouse
-always shows all items
+    <body>
+    <section>
+    <div class="container">
+    <h2> Would you like to do? </h2>
+    
+    <p> <a href="/view_inventory" > <button class="button"> View all inventory items and warehouse locations </button></a> </p>
+    <br>
 
-Update
-inventory
+    <p> <a href="/create_inventory" > <button class="button"> Create new inventory item </button></a> </p>
+    <br>
 
-Delete
-inventory
-drop down of inventory, select and hit submit
+    <p> <a href=/create_warehouse > <button class="button"> Create new warehouse location </button></a> </p>
+    <br>
+
+    <p> <a href=/edit_inventory > <button class="button"> Edit existing inventory item </button></a> </p>
+    <br>
+
+    <p> <a href=/delete_inventory > <button class="button"> Delete inventory item </button></a> </p>
+    <br>
+
+{% endblock %}

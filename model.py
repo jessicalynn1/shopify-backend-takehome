@@ -1,5 +1,6 @@
 from flask_sqlalchemy import SQLAlchemy
 
+
 db = SQLAlchemy()
 
 
@@ -93,7 +94,7 @@ class Warehouse(db.Model):
 #     db.session.add_all([adults, thrill, kid, hm, mb, mtp, user])
 #     db.session.commit()
 
-def connect_to_db(app, db_uri="postgres://popkjngt:VvqKa5kCap5HUaVA0DapnqqOVf6RHSxV@heffalump.db.elephantsql.com/popkjngt", echo=False):
+def connect_to_db(app, db_uri="postgresql://popkjngt:VvqKa5kCap5HUaVA0DapnqqOVf6RHSxV@heffalump.db.elephantsql.com/popkjngt", echo=False):
     """Connect the database to the Flask app."""
 
     app.config["SQLALCHEMY_DATABASE_URI"] = db_uri
