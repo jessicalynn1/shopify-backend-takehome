@@ -4,23 +4,6 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 
-# class User(db.Model):
-#     """A user."""
-
-#     __tablename__ = 'users'
-
-#     id = db.Column(db.Integer,
-#                         autoincrement=True,
-#                         primary_key=True)
-#     name = db.Column(db.String, unique=False)
-#     email = db.Column(db.String, unique=True)
-#     password = db.Column(db.String)
-
-
-#     def __repr__(self):
-#         return f'<User user_id={self.id} email={self.email}>'
-    
-    
 class Inventory(db.Model):
     """Table to keep track of inventory items"""
 
@@ -29,7 +12,7 @@ class Inventory(db.Model):
     id = db.Column(db.Integer,
                         autoincrement=True,
                         primary_key=True)
-    product_code = db.Column(db.Integer, unique=True)
+    product_code = db.Column(db.String, unique=True)
     name = db.Column(db.String, unique=False)
     description = db.Column(db.String, unique=False)
     quantity = db.Column(db.Integer)
@@ -57,42 +40,7 @@ class Warehouse(db.Model):
         return f'<Warehouse id={self.id} name={self.name}>'
 
 
-# class InventoryWarehouse(db.Model):
-#     """Table to keep track of warehouses and their inventory"""
 
-#     __tablename__ = 'inventory-warehouse'
-
-#     id = db.Column(db.Integer,
-#                         autoincrement=True,
-#                         primary_key=True)
-#     warehouse_name = db.Column(db.String, db.ForeignKey("warehouse.name"), nullable=False)
-#     product_name = db.Column(db.String, db.ForeignKey("inventory.name"), nullable=False)
-
-#     inventory = db.relationship("Inventory", backref="inventory-warehouse")
-#     warehouse = db.relationship("Warehouse", backref="inventory-warehouse")
-
-#     def __repr__(self):
-#         return f'<InventoryWarehouse name={self.name} product_name={self.product_name}>'
-
-
-# def example_data():
-#     """Create some sample data."""
-
-#     Category.query.delete()
-#     Ride.query.delete()
-
-#     adults = Category(name="Adults")
-#     thrill = Category(name="Thrill")
-#     kid = Category(name="Kid")
-
-#     user = User(email="quorra@hotmail.com", password="1234")
-
-#     hm = Ride(name="Haunted Mansion")
-#     mb = Ride(name="Matterhorn Bobsleds")
-#     mtp = Ride(name="Mad Tea Party")
-
-#     db.session.add_all([adults, thrill, kid, hm, mb, mtp, user])
-#     db.session.commit()
 
 def connect_to_db(app, db_uri="postgresql://popkjngt:VvqKa5kCap5HUaVA0DapnqqOVf6RHSxV@heffalump.db.elephantsql.com/popkjngt", echo=False):
     """Connect the database to the Flask app."""

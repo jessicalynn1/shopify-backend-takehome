@@ -1,45 +1,23 @@
-
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-          <a class="navbar-brand" href="/">Jessica's Craft Room</a>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
-            <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="/" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            View
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" href=/view>View all inventory items</a></li>
-            <li><a class="dropdown-item" href=/view>View all warehouse locations</a></li>
+<body>
+<section id="inventory-list">
+    <h1>List of inventory items</h1>
+    <ol id="inventory-list">
+    {% for item in inventory_table %}
+    <li> {{ item.name }} </li>
+    {% endfor %}
+  </section>
 
-              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="/" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Create
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                  <li><a class="dropdown-item" href=/create_inventory>Create new inventory item</a></li>
-                  <li><a class="dropdown-item" href=/create_warehouse>Create new warehouse location</a></li>
-                  
-                  <li class="nav-item">
-                    <a class="nav-link" href=/edit_inventory>Update</a>
-                  </li>
-                  <li class="nav-item">
-                    <a class="nav-link" href=/delete_inventory>Delete</a>
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
+  <section id="warehouse-list">
+    <h1>List of warehouses</h1>
+    <ol id="warehouse-list">
+    {% for item in warehouse_table %}
+    <li> {{ item.name }} </li>
+    {% endfor %}
+  </section>
 
-  </head>
-</html>
+</body>
+
 

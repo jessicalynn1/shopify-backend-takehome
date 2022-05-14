@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
-{% block title %} Jessica's Craft Room {% endblock %}
+{% block title %} Chris's Custom Designs {% endblock %}
 
 {% block body %}
 
@@ -10,7 +10,7 @@
     <div class="container">
             <h4>Please fill out the form below to create a new inventory item.</h4>
 
-            <form action="view_inventory.html" method="POST">
+            <form action="commit_inventory" method="POST">
              <br>
              <br>
              Product code (UPC)
@@ -27,12 +27,10 @@
              <br>
              Warehouse
              <select name='warehouse'>
-              <option value="Denver">Denver</option>
-              <option value="San Jose">San Jose</option>
-              <option value="Philadelphia">Philadelphia</option>
-              <option value="Atlanta">Atlanta</option>
-              <option value="Chicago">Chicago</option>
-          </select>
+              {% for item in warehouse_table %}
+              <option value="{{item.name}}" SELECTED> {{ item.name }}</option>
+              {% endfor %}
+            </select>
             <br>
     <h4>Once you have completed the form, please hit the submit button.</h4>
     <br>

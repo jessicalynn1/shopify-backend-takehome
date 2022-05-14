@@ -7,9 +7,6 @@ import model
 import server
 
 
-model.connect_to_db(server.app)
-model.db.create_all()
-
 
 CITIES = ["Denver", "San Jose", "Philadelphia", "Atlanta", "Chicago"]
 
@@ -20,8 +17,8 @@ for city in CITIES:
 
 
 #This is the weather API that I'm trying to connect to, needs to be included in description of inventory
-res = requests.get('https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={93b423527d6806d147c30e1558064431}')
-response = res.json()
+# res = requests.get('https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={93b423527d6806d147c30e1558064431}')
+# response = res.json()
 
 
 

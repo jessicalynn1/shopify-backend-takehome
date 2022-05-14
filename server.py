@@ -1,5 +1,6 @@
 from flask import (Flask, render_template, request, flash, session, redirect)
 from model import connect_to_db, db, Inventory, Warehouse
+import model
 
 from jinja2 import StrictUndefined
 import webbrowser
@@ -12,6 +13,9 @@ app.secret_key = "dev"
 app.jinja_env.undefined = StrictUndefined
 
 
+model.connect_to_db(app)
+model.db.create_all()
+
 
 @app.route("/")
 def homepage():
@@ -20,8 +24,17 @@ def homepage():
     return render_template("homepage.html")
 
 
-@app.route("/create_inventory", methods=["POST"])
+@app.route("/create_inventory")
 def create_inventory():
+    """Allows user to create a new inventory item"""
+
+    warehouse_table = Warehouse.query.all()
+           
+    return render_template("create_inventory.html", warehouse_table=warehouse_table)
+
+
+@app.route("/commit_inventory", methods=["POST"])
+def commit_inventory():
     """Allows user to create a new inventory item"""
     
     product_code = request.form.get("product-code")
@@ -36,47 +49,76 @@ def create_inventory():
     db.session.add(new_product)
     db.session.commit()
            
-    return render_template("create_inventory.html")
+    return redirect("/")
 
 
-@app.route("/edit_inventory", methods=["POST"])
+@app.route("/edit_inventory")
 def edit_inventory():
     """Allows user to edit an existing inventory item"""
+
+    inventory_table = Inventory.query.all()
+    warehouse_table = Warehouse.query.all()
+
+    return render_template("edit_inventory.html", inventory_table=inventory_table, warehouse_table=warehouse_table)
+
+
+@app.route("/commit_edit", methods=["POST"])
+def commit_edit():
+    """Allows user to edit an existing inventory item"""
     
+    product_code = request.form.get("product-code")
     edit_name = request.form.get("name")
     edit_desc = request.form.get("description") 
     edit_quantity = request.form.get("quantity")
     edit_warehouse = request.form.get("warehouse")
-    product_code = Inventory.query.filter_by("").first()
     all_inventory = Inventory.query.all()
     print(all_inventory)
 
     edited = Inventory(product_code=product_code, name=edit_name, description=edit_desc, quantity=edit_quantity, warehouse_id=edit_warehouse)
     db.session.add(edited)
     db.session.commit()
-           
+
     return render_template("edit_inventory.html", all_inventory=all_inventory)
 
 
-@app.route("/delete_inventory", methods=["POST"])
+@app.route("/delete_inventory")
 def delete_inventory():
     """Allows user to delete an existing inventory item"""
+
+    inventory_table = Inventory.query.all()
+           
+    return render_template("delete_inventory.html", inventory_table=inventory_table)
+
+
+@app.route("/commit_delete", methods=["POST"])
+def commit_delete():
+    """Allows user to delete an existing inventory item"""
     
-    deleted = request.form.get("deleted") 
-    item = Inventory.query.filter_by(name=deleted).first()
+    deleted = request.form.get("deleted")
+    print(deleted)
+    item = Inventory.query.filter_by(name=deleted.name).first()
     db.session.delete(item)
     db.session.commit()
            
-    return render_template("delete_inventory.html")
+    return redirect("/")
 
 
-@app.route("/create_warehouse", methods=["POST"])
+@app.route("/create_warehouse")
 def create_warehouse():
+    """Allows user to create a new warehouse location"""
+    
+    warehouse_table = Warehouse.query.all()
+
+    return render_template("create_warehouse.html", warehouse_table=warehouse_table)
+
+
+@app.route("/commit_warehouse", methods=["POST"])
+def commit_warehouse():
     """Allows user to create a new warehouse location"""
     
     location = request.form.get("location")
     db_location = Warehouse.query.filter_by(name=location).first()
-    #need to add weather here if i use that
+    # need to add weather here if i use that
 
     if not db_location:
         warehouse_location = Warehouse(name=location) #need to add weather here
@@ -85,7 +127,7 @@ def create_warehouse():
     else:
         flash ("This warehouse location already exists.")
 
-        return render_template("create_warehouse.html")
+    return redirect("/")
 
 
 @app.route("/inventory_warehouse", methods=["POST"])
@@ -105,8 +147,8 @@ def inventory_warehouse():
     return render_template("inventory_warehouse.html")
 
 
-@app.route("/view", methods=["GET"])
-def view():
+@app.route("/view_inventory", methods=["GET"])
+def view_inventory():
     """Allows user to search for inventory items"""
     
     inventory_table = Inventory.query.all()
