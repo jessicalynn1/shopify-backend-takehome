@@ -1,7 +1,9 @@
+from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
 
-db = SQLAlchemy()
+app = Flask(__name__)
+db = SQLAlchemy(app)
 
 
 class Inventory(db.Model):
@@ -33,8 +35,8 @@ class Warehouse(db.Model):
                         autoincrement=True,
                         primary_key=True)
     name = db.Column(db.String, unique=True)
-    weather = db.Column(db.String, unique=False) #need to load the weather data here
-
+    # weather = db.Column(db.String, unique=False, Nullable=False) 
+    #need to load the weather data here
 
     def __repr__(self):
         return f'<Warehouse id={self.id} name={self.name}>'

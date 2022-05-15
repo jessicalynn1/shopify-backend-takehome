@@ -3,22 +3,14 @@ import json
 import requests
 from pprint import pprint
 
-import model
+from model import connect_to_db, db, Inventory, Warehouse
 import server
 
 
-
-CITIES = ["Denver", "San Jose", "Philadelphia", "Atlanta", "Chicago"]
-
-for city in CITIES:
-    c = model.Warehouse(name=city)
-    model.db.session.add(c)
-    model.db.session.commit()
-
-
-#This is the weather API that I'm trying to connect to, needs to be included in description of inventory
-# res = requests.get('https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={93b423527d6806d147c30e1558064431}')
-# response = res.json()
+os.system("createdb Inventory")
+os.system("createdb Warehouse")
+connect_to_db(server.app)
+db.create_all()
 
 
 
