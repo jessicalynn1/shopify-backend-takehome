@@ -10,20 +10,25 @@ Chris's Custom Designs is built with Python Flask on the backend with a PostgreS
 Users can view all inventory and warehouse locations.
 
 
+
 #### Create new inventory item
 Users can create a new inventory item.
+
 
 
 #### Create new warehouse location
 Users can create a new warehouse item.
 
 
+
 #### Edit inventory items
 Users can edit an inventory item.
 
 
+
 #### Delete inventory items
 Users can delete an inventory item.
+
 
 
 ## Technologies
@@ -46,9 +51,6 @@ Please read through and follow the steps below to get the app running.
 To download and use Chris's Custom Designs please follow these instructions:
 1. Navigate to my Replit file: https://replit.com/@JessicaF1/shopify-backend-takehome#.replit
 2. Click the green 'Run' button
-3. Install all requirements with `pip3 install -r requirements.txt`
-4. Next, run `python3 seed_database.py`
-5. Finally, launch the server with `python3 server.py`
 
 
 ## Coming Soon...
