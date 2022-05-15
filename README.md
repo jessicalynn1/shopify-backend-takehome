@@ -49,7 +49,7 @@ Database:
 ## Getting Started  
 Please read through and follow the steps below to get the app running.
 To download and use Chris's Custom Designs please follow these instructions:
-1. Navigate to my Replit file: https://replit.com/@JessicaF1/shopify-backend-takehome#.replit
+1. Navigate to my Replit file: https://replit.com/@JessicaF1/shopify-backend-takehome-1#server.py
 2. Click the green 'Run' button
 
 
